@@ -35,7 +35,7 @@ export const up: Migration = async ({ context: queryInterface }) => {
         }
       },
       dish_name: {
-        type: DataType.STRING,
+        type: DataType.TEXT,
         allowNull: false,
         comment: 'history dish name'
       },

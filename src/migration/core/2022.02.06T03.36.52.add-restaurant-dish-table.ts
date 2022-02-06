@@ -20,7 +20,7 @@ export const up: Migration = async ({ context: queryInterface }) => {
         }
       },
       name: {
-        type: DataType.STRING,
+        type: DataType.TEXT,
         allowNull: false,
       },
       price: {
