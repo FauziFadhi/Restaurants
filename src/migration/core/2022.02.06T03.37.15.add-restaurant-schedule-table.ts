@@ -24,11 +24,11 @@ export const up: Migration = async ({ context: queryInterface }) => {
         allowNull: false,
       },
       start_time: {
-        type: DataType.TIME,
+        type: 'timetz',
         allowNull: false,
       },
       end_time: {
-        type: DataType.TIME,
+        type: 'timetz',
         allowNull: false,
       },
       created_at: DataType.DATE,
