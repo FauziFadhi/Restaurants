@@ -1,5 +1,7 @@
-import { AllowNull, Column, Model, Table } from "sequelize-typescript";
+import { AllowNull, Column, DefaultScope, HasMany, Model, Table } from "sequelize-typescript";
 import { IModelUnfilledAtt } from "../utils/interface/base.model";
+import RestaurantDish from "./RestaurantDish";
+import RestaurantSchedule from "./RestaurantSchedule";
 
 
 interface IModelOptional extends IModelUnfilledAtt {
@@ -12,6 +14,12 @@ interface IModel extends Partial<IModelOptional> {
 
 export type IModelCreate = Omit<IModel, 'id'>
 
+
+@DefaultScope(() => ({
+  attributes: {
+    exclude: ['deletedAt', 'createdAt', 'updatedAt']
+  }
+}))
 @Table({
   paranoid: true,
   indexes: [
@@ -29,4 +37,9 @@ export default class Restaurant extends Model<IModel, IModelCreate> {
   @Column
   balance?: string;
 
+  @HasMany(() => RestaurantSchedule)
+  schedules!: RestaurantSchedule[]
+
+  @HasMany(() => RestaurantDish)
+  dishes!: RestaurantDish[]
 }
