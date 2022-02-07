@@ -1,6 +1,7 @@
-import { AllowNull, Column, Default, ForeignKey, Model, Table } from "sequelize-typescript";
+import { AllowNull, Column, Default, ForeignKey, HasMany, Model, Table } from "sequelize-typescript";
 import { IModelUnfilledAtt } from "../utils/interface/base.model";
 import Customer from "./Customer";
+import PurchaseHistoryDetail from "./PurchaseHistoryDetail";
 import Restaurant from "./Restaurant";
 
 
@@ -52,5 +53,8 @@ export default class PurchaseHistory extends Model<IModel, IModelCreate> impleme
   @AllowNull(false)
   @Column
   date!: Date;
+
+  @HasMany(() => PurchaseHistoryDetail)
+  details: PurchaseHistoryDetail[]
 
 }

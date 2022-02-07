@@ -1,6 +1,6 @@
-import { AllowNull, Column, Default, ForeignKey, Model, Table } from "sequelize-typescript";
+import { AllowNull, Column, Default, HasMany, Model, Table } from "sequelize-typescript";
 import { IModelUnfilledAtt } from "../utils/interface/base.model";
-import Restaurant from "./Restaurant";
+import PurchaseHistory from "./PurchaseHistory";
 
 
 interface IModelOptional extends IModelUnfilledAtt {
@@ -25,11 +25,6 @@ export type IModelCreate = Omit<IModel, 'id'>
   ]
 })
 export default class Customer extends Model<IModel, IModelCreate> implements IModel {
-
-  @ForeignKey(() => Restaurant)
-  @AllowNull(false)
-  @Column
-  restaurantId!: number;
   
   @AllowNull(false)
   @Column
@@ -39,5 +34,8 @@ export default class Customer extends Model<IModel, IModelCreate> implements IMo
   @AllowNull(false)
   @Column
   balance?: number;
+
+  @HasMany(() => PurchaseHistory)
+  purchaseHistories: PurchaseHistory[]
 
 }

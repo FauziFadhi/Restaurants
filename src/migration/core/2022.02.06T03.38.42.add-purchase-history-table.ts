@@ -43,7 +43,7 @@ export const up: Migration = async ({ context: queryInterface }) => {
       },
       created_at: DataType.DATE,
       updated_at: DataType.DATE,
-      is_deleted: DataType.DATE
+      deleted_at: DataType.DATE
     });
   });
 

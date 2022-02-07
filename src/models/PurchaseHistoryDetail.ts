@@ -1,5 +1,6 @@
 import { AllowNull, Column, Default, ForeignKey, Model, Table } from "sequelize-typescript";
 import { IModelUnfilledAtt } from "../utils/interface/base.model";
+import PurchaseHistory from "./PurchaseHistory";
 import Restaurant from "./Restaurant";
 import RestaurantDish from "./RestaurantDish";
 
@@ -23,7 +24,7 @@ export type IModelCreate = Omit<IModel, 'id'>
     fields: ['restaurant_id', 'amount']
   }]
 })
-export default class PurchaseHistory extends Model<IModel, IModelCreate> implements IModel {
+export default class PurchaseHistoryDetail extends Model<IModel, IModelCreate> implements IModel {
 
   @ForeignKey(() => Restaurant)
   @AllowNull(false)
@@ -49,9 +50,4 @@ export default class PurchaseHistory extends Model<IModel, IModelCreate> impleme
   @AllowNull(false)
   @Column
   amount!: number;
-
-  @AllowNull(false)
-  @Column
-  date!: Date;
-
 }
