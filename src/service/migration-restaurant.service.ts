@@ -1,4 +1,5 @@
 import Restaurant from '@models/core/Restaurant';
+import { CONST } from '@utils/constant';
 import axios from 'axios';
 import { format, parse } from 'date-fns';
 import { writeFileSync } from 'fs';
@@ -16,17 +17,30 @@ export class MigrationRestaurantService {
       'https://gist.githubusercontent.com/seahyc/b9ebbe264f8633a1bf167cc6a90d4b57/raw/021d2e0d2c56217bad524119d1c31419b2938505/restaurant_with_menu.json',
     );
 
-    const restaurants = await this.insertRestaurantData(resp.data, transaction);
+    const { INDEX_DISHES, INDEX_RESTAURANT } = CONST.ELASTIC;
+
+    const { restaurants, dishes } = await this.insertRestaurantData(
+      resp.data,
+      transaction,
+    );
     writeFileSync('restaurants.json', JSON.stringify(restaurants));
     const elasticRestaurantsDTO = ArrayToBulkElasticCreateDTO(
-      'restaurants',
+      INDEX_RESTAURANT,
       restaurants,
     );
 
-    await elasticClient.bulk({
-      index: 'restaurants',
-      body: elasticRestaurantsDTO,
-    });
+    const elasticDishesDTO = ArrayToBulkElasticCreateDTO(INDEX_DISHES, dishes);
+
+    await Promise.all([
+      elasticClient.bulk({
+        index: INDEX_DISHES,
+        body: elasticDishesDTO,
+      }),
+      elasticClient.bulk({
+        index: INDEX_RESTAURANT,
+        body: elasticRestaurantsDTO,
+      }),
+    ]);
   }
   /**
    *
@@ -62,23 +76,37 @@ export class MigrationRestaurantService {
       ],
     });
 
-    return restaurants.map((res) => ({
-      id: res.id,
-      name: res.name,
-      balance: res.balance,
-      dishes: res.dishes.map((dish) => ({
+    const dishes = [];
+
+    const mappedRestaurants = restaurants.map((res) => {
+      const disheList = res.dishes.map((dish) => ({
         id: dish.id,
         name: dish.name,
         price: dish.price,
-      })),
-      schedules: res.schedules.map((schedule) => ({
+      }));
+      dishes.push(...disheList);
+
+      const schedules = res.schedules.map((schedule) => ({
         id: schedule.id,
         day: schedule.day,
         startTime: schedule.startTime,
         endTime: schedule.endTime,
         dayStr: Day[schedule.day],
-      })),
-    }));
+      }));
+
+      return {
+        id: res.id,
+        name: res.name,
+        balance: res.balance,
+        dishes: disheList,
+        schedules,
+      };
+    });
+
+    return {
+      restaurants: mappedRestaurants,
+      dishes,
+    };
   }
 
   /**
