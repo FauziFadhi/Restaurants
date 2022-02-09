@@ -1,0 +1,30 @@
+{
+  "index": "restaurants",
+  "body": {
+    "mappings": {
+      "properties": {
+        "dishes": {
+          "type": "nested",
+          "properties": {
+            "price": {
+              "type": "double"
+            }
+          }
+        },
+        "schedules": {
+          "type": "nested",
+          "properties": {
+            "startTime": {
+              "type": "date",
+              "format": "hour_minute_second"
+            },
+            "endTime": {
+              "type": "date",
+              "format": "hour_minute_second"
+            }
+          }
+        }
+      }
+    }
+  }
+}
