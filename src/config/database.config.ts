@@ -18,7 +18,7 @@ const db = new Sequelize({
   define: {
     underscored: true,
   },
-  models: [join(__dirname, '../models')]
-})
+  models: [join(__dirname, '../models/core')],
+});
 
 export default db

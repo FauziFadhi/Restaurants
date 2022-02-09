@@ -1,7 +1,7 @@
 import { Migration } from '../../config/migration.config';
-import Customer from '../../models/Customer';
-import PurchaseHistory from '../../models/PurchaseHistory';
-import PurchaseHistoryDetail from '../../models/PurchaseHistoryDetail';
+import Customer from '../../models/core/Customer';
+import PurchaseHistory from '../../models/core/PurchaseHistory';
+import PurchaseHistoryDetail from '../../models/core/PurchaseHistoryDetail';
 import { MigrationPurchaseHistoryService } from '../../service/migration-purchase-history.service';
 
 export const databasePath = __dirname;

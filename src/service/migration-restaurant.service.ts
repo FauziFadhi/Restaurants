@@ -1,9 +1,9 @@
+import Restaurant from '@models/core/Restaurant';
 import axios from 'axios';
 import { format, parse } from 'date-fns';
 import { writeFileSync } from 'fs';
 import { Transaction } from 'sequelize/types';
 import { elasticClient } from '../config/elastic.config';
-import Restaurant from '../models/Restaurant';
 import { ArrayToBulkElasticCreateDTO } from '../utils/helpers';
 import {
   Day,
@@ -52,15 +52,12 @@ export class MigrationRestaurantService {
 
     const restaurants = await Restaurant.bulkCreate(restaurantsDTO, {
       transaction,
-      returning: ['id', 'balance', 'name'],
       include: [
         {
           association: 'dishes',
-          attributes: ['name', 'price', 'id'],
         },
         {
           association: 'schedules',
-          attributes: ['id', 'day', 'startTime', 'endTime'],
         },
       ],
     });

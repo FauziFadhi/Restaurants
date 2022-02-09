@@ -1,7 +1,7 @@
 import { Migration } from '../../config/migration.config';
-import Restaurant from '../../models/Restaurant';
-import RestaurantDish from '../../models/RestaurantDish';
-import RestaurantSchedule from '../../models/RestaurantSchedule';
+import Restaurant from '../../models/core/Restaurant';
+import RestaurantDish from '../../models/core/RestaurantDish';
+import RestaurantSchedule from '../../models/core/RestaurantSchedule';
 import { MigrationRestaurantService } from '../../service/migration-restaurant.service';
 
 export const databasePath = __dirname;

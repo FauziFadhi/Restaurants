@@ -1,9 +1,9 @@
+import Customer from '@models/core/Customer';
 import axios from 'axios';
 import { parse } from 'date-fns';
 import { readFileSync } from 'fs';
 import { Transaction } from 'sequelize/types';
 import { elasticClient } from '../config/elastic.config';
-import Customer from '../models/Customer';
 import { CONST } from '../utils/constant';
 import { ArrayToBulkElasticCreateDTO } from '../utils/helpers';
 import {
@@ -101,7 +101,7 @@ export class MigrationPurchaseHistoryService {
       const restaurant = restaurantData[history.restaurantName];
       return {
         restaurantName: history.restaurantName,
-        restaurantId: restaurant.id,
+        restaurantId: restaurant?.id,
         amount: history.transactionAmount,
         date: parse(history.transactionDate, 'MM/dd/yyyy hh:mm a', new Date()),
         details: this.mapPurchaseHistoryDetails(history, restaurant),
@@ -119,13 +119,13 @@ export class MigrationPurchaseHistoryService {
     purchaseHistory: IPurchaseHistoryRaw,
     restaurantData: IMappesRestaurantData,
   ): IPurchaseHistoryDetails[] {
-    const dish = restaurantData.dishes[purchaseHistory.dishName];
+    const dish = restaurantData?.dishes[purchaseHistory.dishName];
     return [
       {
         amount: purchaseHistory.transactionAmount,
-        dishId: dish.id,
+        dishId: dish?.id,
         dishName: purchaseHistory.dishName,
-        restaurantId: restaurantData.id,
+        restaurantId: restaurantData?.id,
       },
     ];
   }
