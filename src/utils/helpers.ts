@@ -32,7 +32,7 @@ export function elasticDocToObj(...data: any[]) {
     };
   }
 
-  if (data[1].length >= 2 && typeof data[1][0] == 'string') {
+  if (data[1]?.length >= 2 && typeof data[1][0] == 'string') {
     const result = {};
 
     data[1].forEach((index) => {

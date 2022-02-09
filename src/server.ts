@@ -5,6 +5,7 @@ import { container } from 'tsyringe';
 import db from './config/database.config';
 import { elasticIndexMapping } from './config/elastic.config';
 import { RestaurantController } from './controllers/restaurant.controller';
+import { SearchController } from './controllers/search.controller';
 
 // env
 dotenv.config();
@@ -20,6 +21,8 @@ app.get('/migrate/zloDtgPy0T', async (_: Request, __: Response) => {
 });
 
 app.use('/restaurants', container.resolve(RestaurantController).routes());
+app.use('/search', container.resolve(SearchController).routes());
+
 app.use(function (err, _, res, __) {
   console.error(err.stack);
 
