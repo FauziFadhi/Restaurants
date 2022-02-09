@@ -81,7 +81,6 @@ export class RestaurantDoc {
     } = options[0];
 
     const builtQuery: IBuiltQuery = {
-      ...options[1],
       size,
       query: {
         bool: {
@@ -89,7 +88,7 @@ export class RestaurantDoc {
         },
       },
     };
-    if (isOpen || openAt) {
+    if (isOpen == 'true' || openAt) {
       RestaurantDoc.searchBySchedule(builtQuery, openAt);
     }
     if (dishMaxPrice || dishMinPrice || dishName)
@@ -105,7 +104,6 @@ export class RestaurantDoc {
     } else if (dishName) {
       RestaurantDoc.searchByDishName(builtQuery, dishName);
     }
-    console.log(JSON.stringify(builtQuery.query.bool.must));
 
     return RestaurantDoc.elasticClient.search({
       index,
@@ -156,9 +154,7 @@ export class RestaurantDoc {
   }
 
   private static searchBySchedule(builtQuery: IBuiltQuery, dateTime?: Date) {
-    console.log(dateTime);
     const date = dateTime || new Date();
-    console.log(date);
     const day = date.getDay() + 1;
     const time = format(date, 'HH:mm:ss');
     builtQuery.query.bool.must.push({

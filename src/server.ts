@@ -24,7 +24,7 @@ app.use('/restaurants', container.resolve(RestaurantController).routes());
 app.use('/search', container.resolve(SearchController).routes());
 
 app.use(function (err, _, res, __) {
-  console.error(err.stack);
+  console.log('\x1b[36m', err.stack, '\x1b[0m');
 
   const statusCode = err.statusCode || 500;
   res.status(statusCode).send({
