@@ -17,6 +17,7 @@ export class CustomerBalanceService {
     const customer = await Customer.findByPk(customerId, {
       attributes: ['id', 'balance'],
       rejectOnEmpty: new HttpException('Customer balance not found.', 404),
+      transaction,
     });
 
     if (+customer.balance <= amount) {
@@ -38,6 +39,7 @@ export class CustomerBalanceService {
     const customer = await Customer.findByPk(customerId, {
       attributes: ['id', 'balance'],
       rejectOnEmpty: new HttpException('Customer balance not found.', 404),
+      transaction,
     });
 
     return await customer.increment('balance', { by: amount, transaction });

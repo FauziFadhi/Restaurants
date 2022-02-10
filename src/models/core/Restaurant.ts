@@ -77,7 +77,6 @@ export default class Restaurant extends Model<IModel, IModelCreate> {
     options?: IncrementDecrementOptionsWithBy<IModel>,
   ) {
     await this.increment(fields, options);
-    await this.reload();
     return await Restaurant.updateElasticSearch(this, options);
   }
 
@@ -86,7 +85,6 @@ export default class Restaurant extends Model<IModel, IModelCreate> {
     options?: IncrementDecrementOptionsWithBy<IModel>,
   ) {
     await this.increment(fields, options);
-    await this.reload();
     return await Restaurant.updateElasticSearch(this, options);
   }
 }

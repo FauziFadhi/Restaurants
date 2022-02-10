@@ -17,13 +17,14 @@ export class RestaurantBalanceService {
     const restaurant = await Restaurant.findByPk(restaurantId, {
       attributes: ['id', 'balance'],
       rejectOnEmpty: new HttpException('Restaurant balance not found.', 404),
+      transaction,
     });
 
     if (+restaurant.balance <= amount) {
       throw new HttpException('Your restaurant balance not enough.', 400);
     }
 
-    return await restaurant.decrementWithHook('balance', { by: amount, transaction });
+    return await restaurant.decrementWithHook('balance', { by: +amount, transaction });
   }
 
   /**
@@ -38,8 +39,9 @@ export class RestaurantBalanceService {
     const restaurant = await Restaurant.findByPk(restaurantId, {
       attributes: ['id', 'balance'],
       rejectOnEmpty: new HttpException('Restaurant balance not found.', 404),
+      transaction,
     });
 
-    return await restaurant.incrementWithHook('balance', { by: amount, transaction });
+    return await restaurant.incrementWithHook('balance', { by: +amount, transaction });
   }
 }

@@ -48,11 +48,14 @@ export class PurchaseService {
     ]);
 
     return await db.transaction({ transaction }, async (transaction) => {
-      const { totalAmount, purchase } = await this.storePurchase({
-        restaurant,
-        dishes: [dish],
-        customerId,
-      });
+      const { totalAmount, purchase } = await this.storePurchase(
+        {
+          restaurant,
+          dishes: [dish],
+          customerId,
+        },
+        transaction,
+      );
 
       const [customer, restaurantData] = await Promise.all([
         /** decrease customer balance */
