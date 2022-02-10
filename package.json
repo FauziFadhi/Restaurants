@@ -39,6 +39,7 @@
     "dev": "ts-node-dev --clear -r tsconfig-paths/register src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
-    "migrate": "ts-node -r tsconfig-paths/register migrate up"
+    "migrate": "ts-node -r tsconfig-paths/register migrate up",
+    "test:coverage": "jest --coverage"
   }
 }
