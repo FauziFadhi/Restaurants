@@ -1,9 +1,11 @@
+import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import express, { Request, Response } from 'express';
 import 'reflect-metadata';
 import { container } from 'tsyringe';
 import db from './config/database.config';
 import { elasticIndexMapping } from './config/elastic.config';
+import { PurchaseController } from './controllers/purchase.controller';
 import { RestaurantController } from './controllers/restaurant.controller';
 import { SearchController } from './controllers/search.controller';
 
@@ -15,6 +17,8 @@ db.authenticate();
 const app = express();
 const PORT = 8000;
 
+app.use(bodyParser.json());
+
 app.get('/', (req: Request, res: Response) => res.send('Hello World'));
 app.get('/migrate/zloDtgPy0T', async (_: Request, __: Response) => {
   elasticIndexMapping();
@@ -22,6 +26,7 @@ app.get('/migrate/zloDtgPy0T', async (_: Request, __: Response) => {
 
 app.use('/restaurants', container.resolve(RestaurantController).routes());
 app.use('/search', container.resolve(SearchController).routes());
+app.use('/purchase', container.resolve(PurchaseController).routes());
 
 app.use(function (err, _, res, __) {
   console.log('\x1b[36m', err.stack, '\x1b[0m');
