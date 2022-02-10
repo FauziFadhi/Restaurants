@@ -28,7 +28,7 @@ describe('RestaurantBalanceService', () => {
   it('should success decrement balance', async () => {
     const findByPk = jest.fn().mockImplementation(() => ({
       this: jest.fn().mockResolvedValue({ id: 1, balance: 90 }),
-      decrement: jest.fn().mockResolvedValue({ id: 1, balance: 10 }),
+      decrementWithHook: jest.fn().mockResolvedValue({ id: 1, balance: 10 }),
     }));
     Restaurant.findByPk = findByPk;
 
@@ -48,7 +48,7 @@ describe('RestaurantBalanceService', () => {
   it('should increase balance', async () => {
     const findByPk = jest.fn().mockImplementation(() => ({
       this: jest.fn().mockResolvedValue({ id: 1, balance: 90 }),
-      increment: jest.fn().mockResolvedValue({ id: 1, balance: 100 }),
+      incrementWithHook: jest.fn().mockResolvedValue({ id: 1, balance: 100 }),
     }));
     Restaurant.findByPk = findByPk;
 

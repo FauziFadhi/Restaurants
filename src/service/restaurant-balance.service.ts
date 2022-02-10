@@ -23,7 +23,7 @@ export class RestaurantBalanceService {
       throw new HttpException('Your restaurant balance not enough.', 400);
     }
 
-    return await restaurant.decrement('balance', { by: amount, transaction });
+    return await restaurant.decrementWithHook('balance', { by: amount, transaction });
   }
 
   /**
@@ -40,6 +40,6 @@ export class RestaurantBalanceService {
       rejectOnEmpty: new HttpException('Restaurant balance not found.', 404),
     });
 
-    return await restaurant.increment('balance', { by: amount, transaction });
+    return await restaurant.incrementWithHook('balance', { by: amount, transaction });
   }
 }

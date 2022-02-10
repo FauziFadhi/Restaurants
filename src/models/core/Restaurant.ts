@@ -1,3 +1,5 @@
+import { elasticClient } from '@config/elastic.config';
+import { CONST } from '@utils/constant';
 import { IModelUnfilledAtt } from '@utils/interface/model.base';
 import {
   AllowNull,
@@ -7,6 +9,7 @@ import {
   Model,
   Table,
 } from 'sequelize-typescript';
+import { IncrementDecrementOptionsWithBy } from 'sequelize/types';
 import RestaurantDish from './RestaurantDish';
 import RestaurantSchedule from './RestaurantSchedule';
 
@@ -48,4 +51,42 @@ export default class Restaurant extends Model<IModel, IModelCreate> {
 
   @HasMany(() => RestaurantDish)
   dishes!: RestaurantDish[];
+
+  static async updateElasticSearch(model: Restaurant, options) {
+    if (options.transaction) {
+      options.transaction.afterCommit(async () => {
+        await elasticClient.update({
+          id: model.id,
+          index: CONST.ELASTIC.INDEX_RESTAURANT,
+          type: '_doc',
+          body: { doc: model.toJSON() },
+        });
+      });
+      return model;
+    }
+    return await elasticClient.update({
+      id: model.id,
+      index: CONST.ELASTIC.INDEX_RESTAURANT,
+      type: '_doc',
+      body: { doc: model.toJSON() },
+    });
+  }
+
+  async incrementWithHook<K extends keyof IModel>(
+    fields: K | readonly K[] | Partial<IModel>,
+    options?: IncrementDecrementOptionsWithBy<IModel>,
+  ) {
+    await this.increment(fields, options);
+    await this.reload();
+    return await Restaurant.updateElasticSearch(this, options);
+  }
+
+  async decrementWithHook<K extends keyof IModel>(
+    fields: K | readonly K[] | Partial<IModel>,
+    options?: IncrementDecrementOptionsWithBy<IModel>,
+  ) {
+    await this.increment(fields, options);
+    await this.reload();
+    return await Restaurant.updateElasticSearch(this, options);
+  }
 }
