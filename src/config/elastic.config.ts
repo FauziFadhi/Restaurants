@@ -9,18 +9,15 @@ export const elasticClient = new Client({
 });
 
 export const elasticIndexMapping = async () => {
-  await Promise.all(
-    INDEX_MAPPINGS.map(async ({ index, body, type }: any) => {
-      try {
-        elasticClient.indices.create({
-          index,
-          body,
-        });
-      } catch (e) {
-        console.log(e);
-      }
-    }),
-  );
+  for (const data of INDEX_MAPPINGS) {
+    try {
+      await elasticClient.indices.create({
+        index: data.index,
+        body: (data as any).body,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
-  return;
 };
