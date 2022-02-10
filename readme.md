@@ -1,7 +1,11 @@
 # How to Run
-1. `docker-compose -f docker-compose.yml up`
-2. `npm install`
-2. `npm run dev`
+1. run `cp .env.example .env`
+2. fill `.env` file attributes
+3. run `docker-compose -f docker-compose.yml up -d`
+4. run `npm install`
+5. run `npm run dev`
+6. make a request to `http://localhost:8000/migrate/zloDtgPy0T` for migrating elastic map
+7. run `npm run migrate -- up` to make migration for database
 
 
 # Migrate Elastic Index Map
