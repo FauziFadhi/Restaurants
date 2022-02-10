@@ -5,6 +5,7 @@ config();
 
 export const elasticClient = new Client({
   host: process.env.ELASTIC_HOST,
+  ssl: { rejectUnauthorized: false, pfx: [] },
 });
 
 export const elasticIndexMapping = async () => {

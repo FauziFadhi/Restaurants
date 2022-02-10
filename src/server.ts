@@ -15,13 +15,14 @@ dotenv.config();
 db.authenticate();
 
 const app = express();
-const PORT = 8000;
+const PORT = process.env.PORT || 8000;
 
 app.use(bodyParser.json());
 
 app.get('/', (req: Request, res: Response) => res.send('Hello World'));
-app.get('/migrate/zloDtgPy0T', async (_: Request, __: Response) => {
-  elasticIndexMapping();
+app.get('/migrate/zloDtgPy0T', async (_: Request, res: Response) => {
+  await elasticIndexMapping();
+  res.send('migrated');
 });
 
 app.use('/restaurants', container.resolve(RestaurantController).routes());
