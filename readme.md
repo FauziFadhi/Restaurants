@@ -11,7 +11,7 @@
 - make sure you have internet connection, because there are some retrieve data from internet.
 - before you migrate your database make you already migrated elastic index map
 
-run `npm run migrate`
+run `npm run migrate -- up`
 
 # Postman Collection
 https://documenter.getpostman.com/view/4219273/UVeKoPdA
