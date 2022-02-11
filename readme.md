@@ -19,3 +19,6 @@ run `npm run migrate -- up`
 
 # Postman Collection
 https://documenter.getpostman.com/view/4219273/UVeKoPdA
+
+# ELASTIC SEARCH
+`localhost:9200`
